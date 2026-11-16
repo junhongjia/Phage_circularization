@@ -1,15 +1,17 @@
 library(seqinr)
 
-setwd("/Users/jujiaa/Nextcloud/2_Data/2.2_Processed_Data/03_Janina/00_sequence/separate_R2")
+setwd()        # Choose the working directory.
 
+
+# Function to trim overlapping regions. It takes sequence path, sequence id.
 remove_overlap_and_show <- function(seq, seq_id, min_overlap = 20) {
-  
+  # Miminum overlapping region is set 20bp.
   n <- nchar(seq)
   overlap_length <- 0
   overlap_seq <- ""
   
   for (i in seq(min_overlap, floor(n/2))) {
-    
+    # Loop from 20 to half sequence length.
     prefix <- substr(seq, 1, i)
     suffix <- substr(seq, n - i + 1, n)
     
@@ -42,6 +44,8 @@ remove_overlap_and_show <- function(seq, seq_id, min_overlap = 20) {
   ))
 }
 
+
+# Function to save trimmed fasta files.
 save_fasta <- function(seq, file_name, description) {
   
   fasta_content <- paste0(">", description, "\n", seq)
@@ -63,9 +67,8 @@ for (file in file_list) {
   
   seq_string <- sequence[[1]]
   
-  cleaned_sequence <- gsub("\\s+", "", seq_string)
-  
-  prefix <- sub("\\.[^.]*$", "", basename(file))
+  cleaned_sequence <- gsub("\\s+", "", seq_string)      # Remove whitespace of sequence.
+  prefix <- sub("\\.[^.]*$", "", basename(file))        # Remove file extension.
   
   result <- remove_overlap_and_show(
     cleaned_sequence,
@@ -74,7 +77,7 @@ for (file in file_list) {
   
   save_fasta(
     result$trimmed_sequence,
-    paste0("../../01-1_decircularization/", prefix, ".fa"),
+    paste0("./", prefix, ".fa"),        # Set your output directory.
     description = prefix
   )
 }
