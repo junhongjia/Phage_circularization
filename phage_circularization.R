@@ -1,6 +1,6 @@
 library(seqinr)
 
-setwd()        # Choose the working directory.
+setwd()        # Choose the working directory, which is the directory containing all and only the raw assembled sequences.
 
 
 # Function to trim overlapping regions. It takes sequence path, sequence id.
